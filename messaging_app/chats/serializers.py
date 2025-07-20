@@ -6,13 +6,23 @@ class UserSerializer(serializers.ModelSerializer):
     """
     Serializer for User model.
     """
+    password = serializers.CharField(write_only=True, min_length=8)
+    
     class Meta:
         model = User
         fields = [
             'user_id', 'username', 'first_name', 'last_name', 
-            'email', 'phone_number', 'role', 'created_at'
+            'email', 'phone_number', 'role', 'created_at', 'password'
         ]
         read_only_fields = ['user_id', 'created_at']
+
+    def validate_password(self, value):
+        """
+        Validate password strength.
+        """
+        if len(value) < 8:
+            raise serializers.ValidationError("Password must be at least 8 characters long")
+        return value
 
     def create(self, validated_data):
         """
@@ -24,6 +34,18 @@ class UserSerializer(serializers.ModelSerializer):
             user.set_password(password)
         user.save()
         return user
+
+    def update(self, instance, validated_data):
+        """
+        Update and return existing User instance.
+        """
+        password = validated_data.pop('password', None)
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        if password:
+            instance.set_password(password)
+        instance.save()
+        return instance
 
 
 class MessageSerializer(serializers.ModelSerializer):

@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import MinLengthValidator
 import uuid
 
 
@@ -17,6 +18,11 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=150, null=False, blank=False)
     email = models.EmailField(unique=True, null=False, blank=False)
     phone_number = models.CharField(max_length=15, null=True, blank=True)
+    password = models.CharField(
+        max_length=128,
+        validators=[MinLengthValidator(8)],
+        help_text="Password must be at least 8 characters long"
+    )
     
     ROLE_CHOICES = [
         ('guest', 'Guest'),
