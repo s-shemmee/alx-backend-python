@@ -11,6 +11,14 @@ from .serializers import (
     ConversationListSerializer,
     MessageSerializer
 )
+from .permissions import (
+    IsParticipantOfConversation,
+    IsOwnerOrParticipant,
+    IsMessageSenderOrParticipant,
+    IsConversationParticipant
+)
+from .pagination import MessagePagination, ConversationPagination, UserPagination
+from .filters import MessageFilter, ConversationFilter, UserFilter
 
 
 class UserViewSet(viewsets.ModelViewSet):
@@ -20,8 +28,9 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = UserPagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['role', 'is_active']
+    filterset_class = UserFilter
     search_fields = ['username', 'first_name', 'last_name', 'email']
     ordering_fields = ['username', 'created_at']
     ordering = ['-created_at']
@@ -32,8 +41,10 @@ class ConversationViewSet(viewsets.ModelViewSet):
     ViewSet for managing conversations.
     """
     serializer_class = ConversationSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsConversationParticipant]
+    pagination_class = ConversationPagination
     filter_backends = [DjangoFilterBackend, filters.OrderingFilter]
+    filterset_class = ConversationFilter
     ordering_fields = ['created_at']
     ordering = ['-created_at']
 
@@ -102,9 +113,10 @@ class MessageViewSet(viewsets.ModelViewSet):
     ViewSet for managing messages.
     """
     serializer_class = MessageSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsMessageSenderOrParticipant]
+    pagination_class = MessagePagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
-    filterset_fields = ['conversation', 'sender']
+    filterset_class = MessageFilter
     search_fields = ['message_body']
     ordering_fields = ['sent_at']
     ordering = ['-sent_at']

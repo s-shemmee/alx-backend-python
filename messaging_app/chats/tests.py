@@ -184,4 +184,4 @@ class APIEndpointsTest(APITestCase):
     def test_unauthorized_access_blocked(self):
         """Test that unauthorized access is blocked."""
         response = self.client.get('/api/users/')
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
