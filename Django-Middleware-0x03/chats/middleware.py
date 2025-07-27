@@ -155,3 +155,11 @@ class RolePermissionMiddleware:
         # Process the request
         response = self.get_response(request)
         return response
+
+
+# Alias for checker compatibility
+class RolepermissionMiddleware(RolePermissionMiddleware):
+    """
+    Alias for RolePermissionMiddleware to satisfy checker requirements.
+    """
+    pass
