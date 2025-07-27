@@ -144,3 +144,15 @@ class MessageViewSet(viewsets.ModelViewSet):
             raise PermissionError("You are not a participant in this conversation")
         
         serializer.save(sender=self.request.user)
+
+    def create(self, request, *args, **kwargs):
+        """
+        Create a new message with permission checks.
+        """
+        try:
+            return super().create(request, *args, **kwargs)
+        except PermissionError:
+            return Response(
+                {"detail": "You are not a participant in this conversation"}, 
+                status=status.HTTP_403_FORBIDDEN
+            )

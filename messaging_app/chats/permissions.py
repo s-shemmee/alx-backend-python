@@ -74,9 +74,12 @@ class IsMessageSenderOrParticipant(BasePermission):
             if request.method in permissions.SAFE_METHODS:
                 # Read permissions for participants
                 return is_participant
-            else:
+            elif request.method in ["PUT", "PATCH", "DELETE"]:
                 # Write permissions only for message sender
                 return obj.sender == request.user
+            else:
+                # Other methods for participants
+                return is_participant
         
         return False
 
