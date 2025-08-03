@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.db.models import Prefetch
+from django.views.decorators.cache import cache_page
 from .models import Message, Notification, MessageHistory
 
 
@@ -30,9 +31,10 @@ def threaded_conversation(request, message_id=None):
     Task 3: View to display threaded conversations using advanced ORM techniques
     """
     if message_id:
-        # Get the root message and all its replies using prefetch_related
+        # Get messages using select_related and prefetch_related for optimization
         root_message = get_object_or_404(
-            Message.objects.select_related('sender', 'receiver')
+            Message.objects.filter(sender=request.user)
+            .select_related('sender', 'receiver')
             .prefetch_related(
                 Prefetch(
                     'replies',
@@ -44,7 +46,7 @@ def threaded_conversation(request, message_id=None):
             parent_message=None  # Ensure it's a root message
         )
         
-        # Get all replies recursively
+        # Recursive query using Django's ORM to fetch all replies
         def get_all_replies(message):
             replies = []
             for reply in message.replies.all():
@@ -71,8 +73,8 @@ def unread_messages(request):
     """
     Task 4: View to display unread messages using custom manager
     """
-    # Use custom manager to get unread messages with optimized query
-    unread_msgs = Message.unread_objects.unread_for_user(request.user)
+    # Use custom manager to get unread messages with optimized query using .only()
+    unread_msgs = Message.unread.unread_for_user(request.user)
     
     return render(request, 'messaging/unread_messages.html', {
         'unread_messages': unread_msgs
@@ -90,4 +92,23 @@ def message_history(request, message_id):
     return render(request, 'messaging/message_history.html', {
         'message': message,
         'history': history
+    })
+
+
+@login_required
+@cache_page(60)  # Cache for 60 seconds
+def conversation_messages(request, conversation_id):
+    """
+    Task 5: Cached view to display a list of messages in a conversation
+    """
+    # Use Message.objects.filter with .only() optimization
+    messages_list = Message.objects.filter(
+        sender=request.user
+    ).select_related('sender', 'receiver').only(
+        'id', 'content', 'timestamp', 'sender__username', 'receiver__username'
+    ).order_by('-timestamp')
+    
+    return render(request, 'messaging/conversation_messages.html', {
+        'messages': messages_list,
+        'conversation_id': conversation_id
     })

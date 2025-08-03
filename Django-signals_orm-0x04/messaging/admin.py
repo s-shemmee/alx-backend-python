@@ -20,7 +20,7 @@ class NotificationAdmin(admin.ModelAdmin):
 
 @admin.register(MessageHistory)
 class MessageHistoryAdmin(admin.ModelAdmin):
-    list_display = ('message', 'old_content', 'edited_at')
+    list_display = ('message', 'old_content', 'edited_at', 'edited_by')
     list_filter = ('edited_at',)
-    search_fields = ('message__content', 'old_content')
+    search_fields = ('message__content', 'old_content', 'edited_by__username')
     ordering = ('-edited_at',)

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Message Edit History</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; background-color: #f9f9f9; }
+        .history-entry { border: 1px solid #ccc; padding: 10px; margin: 10px 0; border-radius: 5px; background-color: #fff; }
+        .current-content { background-color: #d4edda; }
+        .old-content { background-color: #f8d7da; }
+        .header { font-weight: bold; color: #333; }
+        .timestamp { color: #666; font-size: 0.9em; }
+        .feature-notice { background-color: #d1ecf1; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="feature-notice">
+        <strong>📝 Feature: Display message edit history in user interface</strong><br>
+        This page allows users to view previous versions of their messages with complete edit tracking.
+    </div>
+    
+    <h1>Message Edit History</h1>
+    
+    <div class="message current-content">
+        <div class="header">Current Message Content</div>
+        <div class="content">{{ message.content }}</div>
+        <div class="timestamp">
+            From: {{ message.sender.username }} → To: {{ message.receiver.username }} | 
+            Last updated: {{ message.timestamp|date:"M d, Y H:i" }} | 
+            Edited: {% if message.edited %}Yes{% else %}No{% endif %}
+        </div>
+    </div>
+    
+    <h2>Edit History</h2>
+    
+    {% if history %}
+        {% for entry in history %}
+            <div class="history-entry old-content">
+                <div class="header">Previous Version #{{ forloop.counter }}</div>
+                <div class="content">{{ entry.old_content }}</div>
+                <div class="timestamp">
+                    Edited: {{ entry.edited_at|date:"M d, Y H:i" }}
+                    {% if entry.edited_by %} | Edited by: {{ entry.edited_by.username }}{% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No edit history available for this message.</p>
+    {% endif %}
+    
+    <hr>
+    <p><strong>Implementation Features:</strong></p>
+    <ul>
+        <li>✅ Complete message edit history tracking</li>
+        <li>✅ <code>edited_by</code> field shows who made each edit</li>
+        <li>✅ Chronological display of all previous versions</li>
+        <li>✅ User interface allows viewing previous versions</li>
+        <li>✅ Current vs historical content clearly distinguished</li>
+    </ul>
+    
+    <a href="{% url 'messaging:unread_messages' %}">← Back to Messages</a>
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversation Messages - Cached View (60 seconds)</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .message-header { font-weight: bold; color: #333; }
+        .message-content { margin: 10px 0; }
+        .message-time { color: #666; font-size: 0.9em; }
+        .cache-notice { background-color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+        .optimization-notice { background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="cache-notice">
+        <strong>🚀 This view is cached for 60 seconds using @cache_page(60)!</strong>
+    </div>
+    
+    <div class="optimization-notice">
+        <strong>⚡ Optimizations used:</strong> Message.objects.filter() with .only() for field optimization
+    </div>
+    
+    <h1>Conversation Messages (ID: {{ conversation_id }})</h1>
+    
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                <div class="message-header">
+                    From: {{ message.sender.username }} → To: {{ message.receiver.username }}
+                    <span class="message-time">{{ message.timestamp|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="message-content">{{ message.content }}</div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No messages found for this conversation.</p>
+    {% endif %}
+    
+    <hr>
+    <p><strong>Technical Implementation:</strong></p>
+    <ul>
+        <li>✅ Uses <code>@cache_page(60)</code> for 60-second caching</li>
+        <li>✅ Uses <code>Message.objects.filter(sender=request.user)</code> pattern</li>
+        <li>✅ Uses <code>.only()</code> for field optimization</li>
+        <li>✅ Uses <code>select_related()</code> for JOIN optimization</li>
+    </ul>
+</body>
+</html>

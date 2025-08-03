@@ -1,12 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
-
-
-class UnreadMessagesManager(models.Manager):
-    """Custom manager for filtering unread messages - Task 4"""
-    def unread_for_user(self, user):
-        return self.filter(receiver=user, read=False).only('id', 'sender', 'content', 'timestamp')
+from .managers import UnreadMessagesManager
 
 
 class Message(models.Model):
@@ -21,7 +16,7 @@ class Message(models.Model):
     
     # Custom managers
     objects = models.Manager()  # Default manager
-    unread_objects = UnreadMessagesManager()  # Custom manager for unread messages
+    unread = UnreadMessagesManager()  # Custom manager for unread messages
     
     class Meta:
         ordering = ['-timestamp']
@@ -50,6 +45,7 @@ class MessageHistory(models.Model):
     message = models.ForeignKey(Message, on_delete=models.CASCADE, related_name='history')
     old_content = models.TextField()
     edited_at = models.DateTimeField(default=timezone.now)
+    edited_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name='message_edits', null=True, blank=True)
     
     class Meta:
         ordering = ['-edited_at']

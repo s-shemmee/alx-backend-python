@@ -150,7 +150,7 @@ class OrmTestCase(TestCase):
         )
         
         # Test custom manager
-        unread_messages = Message.unread_objects.unread_for_user(self.user2)
+        unread_messages = Message.unread.unread_for_user(self.user2)
         self.assertEqual(unread_messages.count(), 2)
         
         # Test that only unread messages are returned
