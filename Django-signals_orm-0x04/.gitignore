@@ -1,0 +1,39 @@
+# Django-signals_orm-0x04 .gitignore
+
+# Database files
+*.sqlite3
+db.sqlite3
+
+# Environment variables
+.env
+.env.local
+.env.production
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Django specific
+*.log
+local_settings.py
+staticfiles/
+media/
+
+# Cache files
+.cache/

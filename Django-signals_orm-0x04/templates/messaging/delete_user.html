@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete User Account</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        .warning { color: red; font-weight: bold; }
+        .btn { padding: 10px 20px; margin: 10px; }
+        .btn-danger { background-color: #dc3545; color: white; border: none; }
+        .btn-secondary { background-color: #6c757d; color: white; border: none; }
+    </style>
+</head>
+<body>
+    <h1>Delete User Account</h1>
+    
+    <div class="warning">
+        <p>⚠️ Warning: This action cannot be undone!</p>
+        <p>Deleting your account will permanently remove:</p>
+        <ul>
+            <li>All your messages</li>
+            <li>All your notifications</li>
+            <li>All message history</li>
+            <li>Your user profile</li>
+        </ul>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete My Account</button>
+        <a href="/" class="btn btn-secondary">Cancel</a>
+    </form>
+</body>
+</html>

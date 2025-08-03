@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Threaded Conversation</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .message-header { font-weight: bold; color: #333; }
+        .message-content { margin: 10px 0; }
+        .message-time { color: #666; font-size: 0.9em; }
+        .thread { margin-left: 20px; border-left: 2px solid #007bff; padding-left: 15px; }
+        .optimization-notice { background-color: #fff3cd; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="optimization-notice">
+        <strong>⚡ Advanced ORM Optimization:</strong> This page uses select_related() and prefetch_related() for efficient database queries.
+    </div>
+    
+    <h1>Threaded Conversation</h1>
+    
+    {% if threaded_messages %}
+        {% for thread in threaded_messages %}
+            <div class="message">
+                <div class="message-header">
+                    {{ thread.message.sender.username }}
+                    <span class="message-time">{{ thread.message.timestamp|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="message-content">{{ thread.message.content }}</div>
+                
+                {% if thread.replies %}
+                    <div class="thread">
+                        {% for reply_thread in thread.replies %}
+                            <div class="message">
+                                <div class="message-header">
+                                    {{ reply_thread.message.sender.username }}
+                                    <span class="message-time">{{ reply_thread.message.timestamp|date:"M d, Y H:i" }}</span>
+                                </div>
+                                <div class="message-content">{{ reply_thread.message.content }}</div>
+                                
+                                {% if reply_thread.replies %}
+                                    <div class="thread">
+                                        {% for sub_reply in reply_thread.replies %}
+                                            <div class="message">
+                                                <div class="message-header">
+                                                    {{ sub_reply.message.sender.username }}
+                                                    <span class="message-time">{{ sub_reply.message.timestamp|date:"M d, Y H:i" }}</span>
+                                                </div>
+                                                <div class="message-content">{{ sub_reply.message.content }}</div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No messages in this conversation.</p>
+    {% endif %}
+    
+    <hr>
+    <p><strong>ORM Optimization Notes:</strong></p>
+    <ul>
+        <li>Uses <code>select_related('sender')</code> to reduce database queries for user information</li>
+        <li>Uses <code>prefetch_related('read_by')</code> for efficient many-to-many lookups</li>
+        <li>Implements recursive threading with optimized query structure</li>
+    </ul>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Conversation Messages - Cached View</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .message { border: 1px solid #ddd; padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .message-header { font-weight: bold; color: #333; }
+        .message-content { margin: 10px 0; }
+        .message-time { color: #666; font-size: 0.9em; }
+        .reply { margin-left: 30px; border-left: 3px solid #007bff; padding-left: 15px; }
+        .cache-notice { background-color: #d4edda; padding: 10px; border-radius: 5px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="cache-notice">
+        <strong>🚀 This view is cached for 60 seconds for better performance!</strong>
+    </div>
+    
+    <h1>Conversation: {{ conversation.title|default:"Untitled" }}</h1>
+    
+    <div class="participants">
+        <strong>Participants:</strong>
+        {% for participant in conversation.participants.all %}
+            {{ participant.username }}{% if not forloop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+    
+    <hr>
+    
+    {% if messages %}
+        {% for message_data in messages %}
+            <div class="message">
+                <div class="message-header">
+                    {{ message_data.sender.username }} 
+                    <span class="message-time">{{ message_data.timestamp|date:"M d, Y H:i" }}</span>
+                </div>
+                <div class="message-content">{{ message_data.content }}</div>
+                
+                {% if message_data.replies.all %}
+                    <div class="replies">
+                        {% for reply in message_data.replies.all %}
+                            <div class="reply message">
+                                <div class="message-header">
+                                    {{ reply.sender.username }} 
+                                    <span class="message-time">{{ reply.timestamp|date:"M d, Y H:i" }}</span>
+                                </div>
+                                <div class="message-content">{{ reply.content }}</div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No messages in this conversation yet.</p>
+    {% endif %}
+    
+    <hr>
+    <p><strong>Cache Information:</strong></p>
+    <p>This page is cached for performance. If you don't see recent messages, they will appear after the cache expires (60 seconds).</p>
+    <p><a href="{% url 'chats:clear_conversation_cache' conversation.id %}">Clear Cache</a></p>
+</body>
+</html>
