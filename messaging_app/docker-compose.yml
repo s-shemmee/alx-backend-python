@@ -6,6 +6,8 @@ services:
     restart: always
     environment:
       MYSQL_DATABASE: ${MYSQLDB}
+      MYSQL_DB: ${MYSQLDB}
+      MYSQLUSER: ${MYSQLUSER}
       MYSQL_USER: ${MYSQLUSER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
