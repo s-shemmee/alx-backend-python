@@ -83,6 +83,7 @@ WSGI_APPLICATION = 'messaging_app.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
+<<<<<<< HEAD
 if os.environ.get('DB_HOST'):
     DATABASES = {
         'default': {
@@ -103,6 +104,20 @@ else:
             'ENGINE': 'django.db.backends.sqlite3',
             'NAME': BASE_DIR / 'db.sqlite3',
         }
+=======
+
+
+import os
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+    'NAME': os.environ.get('MYSQLDB', 'messaging_db'),
+    'USER': os.environ.get('MYSQLUSER', 'messaging_user'),
+        'PASSWORD': os.environ.get('MYSQL_PASSWORD', 'messaging_pass'),
+        'HOST': os.environ.get('MYSQL_HOST', 'db'),
+        'PORT': os.environ.get('MYSQL_PORT', '3306'),
+>>>>>>> d0490bfd6050893ba6fe451657340bb3fed08906
     }
 
 

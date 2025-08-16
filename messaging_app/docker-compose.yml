@@ -2,11 +2,21 @@ version: '3.9'
 
 services:
   db:
+<<<<<<< HEAD
     image: mariadb:latest
     restart: always
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
+=======
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_DATABASE: ${MYSQLDB}
+      MYSQL_DB: ${MYSQLDB}
+      MYSQLUSER: ${MYSQLUSER}
+      MYSQL_USER: ${MYSQLUSER}
+>>>>>>> d0490bfd6050893ba6fe451657340bb3fed08906
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     ports:
@@ -16,7 +26,11 @@ services:
 
   web:
     build: .
+<<<<<<< HEAD
     command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+=======
+    command: sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
+>>>>>>> d0490bfd6050893ba6fe451657340bb3fed08906
     volumes:
       - .:/app
     ports:
