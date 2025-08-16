@@ -1,0 +1,17 @@
+#!/bin/bash
+# kurbeScript: Start Minikube, verify cluster, list pods
+
+# Check if minikube is installed
+if ! command -v minikube &> /dev/null; then
+  echo "Minikube is not installed. Please install minikube first."
+  exit 1
+fi
+
+# Start minikube
+minikube start
+
+# Verify cluster is running
+kubectl cluster-info
+
+# List available pods
+kubectl get pods --all-namespaces

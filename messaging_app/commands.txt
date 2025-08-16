@@ -1,0 +1,4 @@
+# Commands to apply Ingress configuration
+kubectl apply -f ingress.yaml
+# To install Nginx Ingress controller (if not present):
+minikube addons enable ingress

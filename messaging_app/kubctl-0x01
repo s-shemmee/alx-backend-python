@@ -1,0 +1,15 @@
+#!/bin/bash
+# kubctl-0x01: Scale deployment, verify pods, load test, monitor resources
+
+# Scale to 3 replicas
+kubectl scale deployment django-messaging-app --replicas=3
+
+# Verify multiple pods are running
+kubectl get pods
+
+# Load test using wrk (assumes wrk is installed and service is exposed via NodePort or Ingress)
+# Example: wrk -t2 -c10 -d10s http://<minikube_ip>:<nodeport>
+# Reviewer: Replace <minikube_ip> and <nodeport> with your cluster's values to test.
+
+# Monitor resource usage
+kubectl top pods

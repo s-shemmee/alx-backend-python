@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-messaging-green
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: django-messaging-green
+  template:
+    metadata:
+      labels:
+        app: django-messaging-green
+    spec:
+      containers:
+      - name: django-messaging-app
+        image: s-shemmee/messaging-app:latest # Use latest for green deployment
+        ports:
+        - containerPort: 8000
+        env:
+        - name: SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: django-secret
+              key: SECRET_KEY
+        - name: DB_HOST
+          value: db
+        - name: DB_PORT
+          value: "3306"
+        - name: DB_NAME
+          value: messaging_db
+        - name: DB_USER
+          value: messaging_user
+        - name: DB_PASSWORD
+          value: messaging_pass

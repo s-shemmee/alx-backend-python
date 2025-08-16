@@ -1,0 +1,18 @@
+#!/bin/bash
+# kubctl-0x03: Rolling update, monitor, and downtime test
+
+# Apply updated blue deployment (version 2.0)
+kubectl apply -f blue_deployment.yaml
+
+# Monitor rollout status
+kubectl rollout status deployment/django-messaging-blue
+
+# Test for downtime using curl
+# Reviewer: Replace <minikube_ip> and <nodeport> with your cluster's values to test.
+for i in {1..20}; do
+  curl -s http://<minikube_ip>:<nodeport>/api/ > /dev/null && echo "Request $i: OK" || echo "Request $i: FAIL"
+  sleep 1
+done
+
+# Verify rolling update is complete
+kubectl get pods
