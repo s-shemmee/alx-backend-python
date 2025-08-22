@@ -10,20 +10,11 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/s-shemmee/alx-backend-python.git', credentialsId: "${GITHUB_CREDENTIALS}"
             }
         }
-        stage('Install Dependencies') {
+        stage('Install & Test in Python Container') {
             steps {
                 sh '''
-                    apt-get update
-                    apt-get install -y python3 python3-pip
-                    python3 --version
-                    pip3 --version
-                    pip3 install -r requirements.txt
+                    docker run --rm -v $PWD:/app -w /app python:3.10 bash -c "pip install -r requirements.txt && python -m pytest --junitxml=report.xml"
                 '''
-            }
-        }
-        stage('Run Tests') {
-            steps {
-                sh 'python3 -m pytest --junitxml=report.xml'
             }
             post {
                 always {
