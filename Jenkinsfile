@@ -12,12 +12,18 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'pip install -r requirements.txt'
+                sh '''
+                    apt-get update
+                    apt-get install -y python3 python3-pip
+                    python3 --version
+                    pip3 --version
+                    pip3 install -r requirements.txt
+                '''
             }
         }
         stage('Run Tests') {
             steps {
-                sh 'pytest --junitxml=report.xml'
+                sh 'python3 -m pytest --junitxml=report.xml'
             }
             post {
                 always {
