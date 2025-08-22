@@ -6,7 +6,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git url: 'https://github.com/s-shemmee/alx-backend-python.git', credentialsId: "${GITHUB_CREDENTIALS}"
+                git branch: 'main', url: 'https://github.com/s-shemmee/alx-backend-python.git', credentialsId: "${GITHUB_CREDENTIALS}"
             }
         }
         stage('Install Dependencies') {
