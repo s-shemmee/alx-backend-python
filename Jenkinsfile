@@ -1,9 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'python:3.10'
-        }
-    }
+    agent any
     environment {
         GITHUB_CREDENTIALS = credentials('github-creds-id')
         DOCKERHUB_CREDS = credentials('dockerhub-creds-id')
