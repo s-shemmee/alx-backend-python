@@ -1,4 +1,10 @@
-<<<<<<< HEAD
+
+Django==5.2.4
+djangorestframework==3.16.0
+djangorestframework_simplejwt==5.5.1
+django-filter==25.1
+mysqlclient==2.2.7
+requests==2.32.4
 aiosqlite==0.21.0
 amqp==5.3.1
 asgiref==3.9.0
@@ -11,19 +17,14 @@ click-didyoumean==0.3.1
 click-plugins==1.1.1.2
 click-repl==0.3.0
 colorama==0.4.6
-Django==5.2.4
 django-cors-headers==4.7.0
 django-environ==0.12.0
-django-filter==25.1
-djangorestframework==3.16.0
-djangorestframework_simplejwt==5.5.1
 drf-nested-routers==0.94.2
 drf-yasg==1.21.10
 git-filter-repo==2.47.0
 idna==3.10
 inflection==0.5.1
 kombu==5.5.4
-mysqlclient==2.2.7
 packaging==25.0
 parameterized==0.9.0
 prompt_toolkit==3.0.51
@@ -32,7 +33,6 @@ PyJWT==2.10.1
 python-dateutil==2.9.0.post0
 pytz==2025.2
 PyYAML==6.0.2
-requests==2.32.4
 six==1.17.0
 sqlparse==0.5.3
 typing_extensions==4.14.1
@@ -41,11 +41,3 @@ uritemplate==4.2.0
 urllib3==2.5.0
 vine==5.1.0
 wcwidth==0.2.13
-=======
-django>=5.2.4
-djangorestframework>=3.16.0
-djangorestframework-simplejwt>=5.4.0
-django-filter>=24.2
-mysqlclient>=2.2.0
-requests>=2.31.0
->>>>>>> d0490bfd6050893ba6fe451657340bb3fed08906
